@@ -1,0 +1,37 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApplication1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //Specify the Directory location 
+            string dir = @"file\path";
+            var dirs = Directory.EnumerateDirectories(dir);
+
+            List<string> csv = new List<string>();
+
+            StreamWriter sw = new StreamWriter(dir + @"\new_csv_name.csv");
+            int index = 1;
+            foreach (var d in dirs)
+            {
+                foreach (var file in Directory.EnumerateFiles(d))
+                {
+                    Console.WriteLine(file);
+                    string content = File.ReadAllText(file).Replace(',', ' ').Replace('\n', ' ');
+                    sw.WriteLine((index++) + "," + content + "," + new DirectoryInfo(d).Name);
+                    sw.Flush();
+                }
+            }
+
+            Console.WriteLine("DONE");
+            Console.Read();
+        }
+    }
+}
